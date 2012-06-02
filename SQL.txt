@@ -1,0 +1,126 @@
+//there is a database called 'project'@'localhost' on the Linux server, 
+//password is "project", I just use it to test my code, if you want you can use it too.
+
+//run the 'add_table_login.php' to add the 'login' table to your databases
+//if your database's name is 'testdb', you don't have to change anything.
+
+
+-- 
+-- Table structure for table `event`
+-- 
+
+CREATE TABLE `event` (
+  `ID` int(9) NOT NULL auto_increment,
+  `title` varchar(100) NOT NULL,
+  `des` varchar(100) default NULL,
+  `location` varchar(100) default NULL,
+  `day` int(3) NOT NULL,
+  `month` int(3) NOT NULL,
+  `year` int(3) NOT NULL,
+  `start_time` time default NULL,
+  `end_time` time default NULL,
+  `feed_id` int(9) default NULL,
+  `user_id` int(9) default NULL,
+  PRIMARY KEY  (`ID`)
+) ;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `login`
+-- 
+
+CREATE TABLE `login` (
+  `ID` mediumint(9) NOT NULL auto_increment,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(40) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `isadmin` tinyint(1) NOT NULL default '0',
+  `security_question` int(2) NOT NULL,
+  `security_answer` varchar(100) NOT NULL,
+  `activated` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `rssfeed`
+-- 
+
+CREATE TABLE `rssfeed` (
+  `rss_id` int(9) NOT NULL auto_increment,
+  `title` varchar(100) NOT NULL,
+  `des` varchar(400) NOT NULL,
+  `creator` varchar(100) NOT NULL,
+  `creation_date` date NOT NULL,
+  PRIMARY KEY  (`rss_id`)
+) ;
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `subscribe`
+-- 
+
+CREATE TABLE `subscribe` (
+  `user_id` int(9) NOT NULL,
+  `feed_id` int(9) NOT NULL,
+  PRIMARY KEY  (`user_id`,`feed_id`)
+) ;
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `reminder`
+-- 
+
+CREATE TABLE `reminder` (
+  `title` varchar(100) NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `user_id` int(9) NOT NULL,
+  `event_id` int(9) NOT NULL
+)
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `share`
+-- 
+
+CREATE TABLE `share` (
+
+	`sid` INT NOT NULL AUTO_INCREMENT, 
+	`username` VARCHAR(100) NOT NULL, 
+	`grant_access` VARCHAR(100) NOT NULL, 
+	`activation` mediumint(1) NOT NULL, 
+	PRIMARY KEY(`sid`)
+) ;
+
+
+NOTE:
+
+case1:
+username = user1, grant_access = friend1, activation = 0; 
+means "friend1" want to see "user1"'s calandar, but still need to get a permit from user1.
+(user1 cannot view friend1's calandar.)
+
+case2:
+username = user1, grant_access = friend1, activation = 1; 
+means "friend1" is allowed to see "user1"'s calandar.
+(user1 can view friend1's calandar)
+
+---------------------------------------------------------
+
+Database Table schema:
+
+login: ID username password email isadmin security_question(int) security_answer activation(Boolean)
+
+rssfeed: rss_id title des creator creation_date
+
+event: ID(Auto increment) title des(NULL) location(NULL) day month year start_time(NULL) end_time(NULL) feed_id(NULL) user_id(NULL)
+
+share: sid(AUTO_INCREMENT) username grant_access activation
